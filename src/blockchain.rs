@@ -23,6 +23,10 @@ pub struct Block {
     //NOTE: hash of current block
     pub hash: String,
 }
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Blockchain {
+    pub blocks: Vec<Block>,
+}
 
 impl Block {
     pub fn new(index: u64, data: User, previous_hash: String) -> Self {
