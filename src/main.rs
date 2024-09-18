@@ -1,5 +1,14 @@
-use actix_web::(get, post, web, App, HttpResponse, HttpServer, Responder);
-use serde::(Deserialize, Serialize);
+
+use actix_web::{web, App, HttpServer, Responder, HttpResponse};
+use std::sync::Mutex;
+mod blockchain;
+use serde::Deserialize
+
+#[derive(Serialize, Deserialize)]
+struct Score {
+    username: String,
+    score: u32
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -14,7 +23,5 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 
-#[get("/")]
-async fn index()-> impl Reponder {
-    HttpResponse::Ok().body("Rust API Initiatied")
-}
+
+
