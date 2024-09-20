@@ -1,10 +1,10 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
+use hex;
 
 // frontend should take a players name. TODO: frontend needs to track score and playuer name
+#[derive(Serialize, Deserialize,Debug, Clone)]
 pub struct User {
     pub player_name: String,
     pub score: u32,
@@ -23,19 +23,10 @@ pub struct Block {
     //NOTE: hash of current block
     pub hash: String,
 }
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Blockchain {
-    pub blocks: Vec<Block>,
-}
-
 impl Block {
     pub fn new(index: u64, data: User, previous_hash: String) -> Self {
         let timestamp = Utc::now();
-        let user_data = User {
-            player_name: "test".to_string(),
-            score: 33,
-        };
-        let hash = Block::calculate_hash(index, &timestamp, user_data, &previous_hash);
+        let hash = Block::calculate_hash(index, &timestamp, &data, &previous_hash);
         Block {
             index,
             timestamp,
@@ -48,7 +39,7 @@ impl Block {
     pub fn calculate_hash(
         index: u64,
         timestamp: &DateTime<Utc>,
-        data: User,
+        data: &User,
         previous_hash: &str,
     ) -> String {
         // user block
